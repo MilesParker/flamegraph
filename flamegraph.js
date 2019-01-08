@@ -2,6 +2,7 @@ var vis = {
     id: 'flamegraph',
     label: 'Flamegraph',
     options: {
+        // TODO ability to modify color range palette and diameter of chart
         color_range: {
             type: 'array',
             label: 'Color Range',
@@ -77,10 +78,9 @@ var vis = {
         };
     
 
-
+        //TODO modify array to concat extra dims together
         var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
         var measure = queryResponse.fields.measures[0].name;
-        //TODO modify array to take dimension and measure names dynamically
 
         //rename keys
         rows = Object.keys(data).length;
@@ -92,21 +92,26 @@ var vis = {
             data[i]["children"] = []
         }
 
+        // sort rows ascending by parent step
+        data.sort(function(a, b) {
+            return parseInt(a[dim_1_parent_step].value) - parseInt(b[dim_1_parent_step].value);
+        });
+        console.log(data);
+
         //nest children steps inside parent steps for chart
-        // TODO sort rows ascending by parent step
         while (rows > 1) {
             last_element = data[rows-1];
             last_element_parent = last_element[dim_1_parent_step].value;
-            // console.log('last element is: ' + last_element['name']);
-            // console.log('last element parent is: ' + last_element_parent);
+            console.log('last element is: ' + last_element['name']);
+            console.log('last element parent is: ' + last_element_parent);
             for (i=0; i<rows; i++) {
                 if (data[i][dim_2_step].value == last_element_parent) {
-                    // console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
+                    console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
                     data[i]["children"].push(last_element);
                     if (data[i]["value"]!=last_element["value"]) {
                         data[i]["value"]+=last_element["value"]
                     }
-                    // console.log('deleting ' + data[rows-1]['name']);
+                    console.log('deleting ' + data[rows-1]['name']);
                     delete data[rows-1];
                     break;
                 }
