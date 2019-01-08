@@ -35,365 +35,6 @@ var vis = {
         //     .attr('height', element.clientHeight);
         // console.log(this.svg);
 
-///////////////////////////////////////////////////////////////////// temp /////////////////////////////////////////////////////////
-
-        console.log(data);
-        console.log(queryResponse);
-        // data = [{
-        //             "redshift_plan_steps.parent_step": 0,
-        //             "redshift_plan_steps.step": 1,
-        //             "redshift_plan_steps.operation": "Limit",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 1,
-        //             "redshift_plan_steps.step": 2,
-        //             "redshift_plan_steps.operation": "Merge",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 2,
-        //             "redshift_plan_steps.step": 3,
-        //             "redshift_plan_steps.operation": "Network",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 3,
-        //             "redshift_plan_steps.step": 4,
-        //             "redshift_plan_steps.operation": "Sort",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 4,
-        //             "redshift_plan_steps.step": 5,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 5,
-        //             "redshift_plan_steps.step": 6,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 102
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 6,
-        //             "redshift_plan_steps.step": 7,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 106
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 6,
-        //             "redshift_plan_steps.step": 43,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 7,
-        //             "redshift_plan_steps.step": 8,
-        //             "redshift_plan_steps.operation": "Hash Right Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_DIST_OUTER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 14373758
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 7,
-        //             "redshift_plan_steps.step": 29,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 68
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 8,
-        //             "redshift_plan_steps.step": 10,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 7470310
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 8,
-        //             "redshift_plan_steps.step": 9,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "check_project",
-        //             "redshift_plan_steps.total_bytes": 67338380
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 10,
-        //             "redshift_plan_steps.step": 11,
-        //             "redshift_plan_steps.operation": "Hash Right Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_DIST_BOTH",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 7470310
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 11,
-        //             "redshift_plan_steps.step": 21,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 584940
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 11,
-        //             "redshift_plan_steps.step": 12,
-        //             "redshift_plan_steps.operation": "Subquery Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 213421800
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 12,
-        //             "redshift_plan_steps.step": 13,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 1894118475
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 13,
-        //             "redshift_plan_steps.step": 14,
-        //             "redshift_plan_steps.operation": "Hash Left Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_DIST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 1894118475
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 14,
-        //             "redshift_plan_steps.step": 19,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 171913812
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 14,
-        //             "redshift_plan_steps.step": 15,
-        //             "redshift_plan_steps.operation": "Hash Left Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_DIST_BOTH",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 975684954
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 15,
-        //             "redshift_plan_steps.step": 17,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 179574552
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 15,
-        //             "redshift_plan_steps.step": 16,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "check_connection",
-        //             "redshift_plan_steps.total_bytes": 580550859
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 17,
-        //             "redshift_plan_steps.step": 18,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "lr$zl4nz55lvnpxd2r44tywg_primary_account_dialect_30_days_base",
-        //             "redshift_plan_steps.total_bytes": 179574552
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 19,
-        //             "redshift_plan_steps.step": 20,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "lr$zlas28hj7hw5qezqql7lg_primary_account_dialect_90_days_base",
-        //             "redshift_plan_steps.total_bytes": 171913812
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 21,
-        //             "redshift_plan_steps.step": 22,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 584940
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 22,
-        //             "redshift_plan_steps.step": 27,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 22,
-        //             "redshift_plan_steps.step": 23,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_DIST_ALL_NONE",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 1988796
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 23,
-        //             "redshift_plan_steps.step": 24,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "check",
-        //             "redshift_plan_steps.total_bytes": 80493130
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 23,
-        //             "redshift_plan_steps.step": 25,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 233976
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 25,
-        //             "redshift_plan_steps.step": 26,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "lr$zlsw0mpr91fq0b3ljkxsh_latest_check",
-        //             "redshift_plan_steps.total_bytes": 233976
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 27,
-        //             "redshift_plan_steps.step": 28,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "check_status",
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 29,
-        //             "redshift_plan_steps.step": 30,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 68
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 30,
-        //             "redshift_plan_steps.step": 41,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 30,
-        //             "redshift_plan_steps.step": 31,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 72
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 31,
-        //             "redshift_plan_steps.step": 32,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 152
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 31,
-        //             "redshift_plan_steps.step": 39,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 32,
-        //             "redshift_plan_steps.step": 34,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 44
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 32,
-        //             "redshift_plan_steps.step": 33,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "license",
-        //             "redshift_plan_steps.total_bytes": 315440
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 34,
-        //             "redshift_plan_steps.step": 35,
-        //             "redshift_plan_steps.operation": "Hash Join",
-        //             "redshift_plan_steps.network_distribution_type": "DS_BCAST_INNER",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 44
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 35,
-        //             "redshift_plan_steps.step": 36,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "client",
-        //             "redshift_plan_steps.total_bytes": 116750
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 35,
-        //             "redshift_plan_steps.step": 37,
-        //             "redshift_plan_steps.operation": "Hash",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": null,
-        //             "redshift_plan_steps.total_bytes": 40
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 37,
-        //             "redshift_plan_steps.step": 38,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "_account",
-        //             "redshift_plan_steps.total_bytes": 40
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 39,
-        //             "redshift_plan_steps.step": 40,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "license_status",
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 41,
-        //             "redshift_plan_steps.step": 42,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "license_type",
-        //             "redshift_plan_steps.total_bytes": 4
-        //           },
-        //           {
-        //             "redshift_plan_steps.parent_step": 43,
-        //             "redshift_plan_steps.step": 44,
-        //             "redshift_plan_steps.operation": "Seq Scan",
-        //             "redshift_plan_steps.network_distribution_type": "",
-        //             "redshift_plan_steps.table": "check_type",
-        //             "redshift_plan_steps.total_bytes": 4
-        //           }]
-
-        ///////////////////////////////////////////////////////////////////// temp /////////////////////////////////////////////////////////
-
         this.container.innerHTML='' // clear container of previous vis so width & height is correct
 
 
@@ -434,8 +75,9 @@ var vis = {
         else { 
           console.log('Query contains correct number of dimensions, measures, and pivots') 
         };
-     
-        // data must be arranged by: parent_step | current_step | name_of_step | metric_value
+    
+
+
         var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
         var measure = queryResponse.fields.measures[0].name;
         //TODO modify array to take dimension and measure names dynamically
@@ -443,9 +85,9 @@ var vis = {
         //rename keys
         rows = Object.keys(data).length;
         for (i=0; i<rows; i++) {
-            data[i]["name"] = data[i][dim_2_step] + ' ' + data[i][dim_3_name]
-            delete data[i]["redshift_plan_steps.operation"]
-            data[i]["value"] = data[i][measure] // TODO change to total cost
+            data[i]["name"] = data[i][dim_2_step].value + ' ' + data[i][dim_3_name].value
+            delete data[i][dim_3_name]
+            data[i]["value"] = data[i][measure].value // TODO change to total cost
             delete data[i][measure]
             data[i]["children"] = []
         }
@@ -453,15 +95,18 @@ var vis = {
         //nest children steps inside parent steps for chart
         // TODO sort rows ascending by parent step
         while (rows > 1) {
-            last_element = data[rows-1]
-            last_element_parent = last_element[dim_1_parent_step]
+            last_element = data[rows-1];
+            last_element_parent = last_element[dim_1_parent_step].value;
+            // console.log('last element is: ' + last_element['name']);
+            // console.log('last element parent is: ' + last_element_parent);
             for (i=0; i<rows; i++) {
-                // console.log(data[i]["redshift_plan_steps.step"])
-                if (data[i][dim_2_step] == last_element_parent) {
+                if (data[i][dim_2_step].value == last_element_parent) {
+                    // console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
                     data[i]["children"].push(last_element);
                     if (data[i]["value"]!=last_element["value"]) {
                         data[i]["value"]+=last_element["value"]
                     }
+                    // console.log('deleting ' + data[rows-1]['name']);
                     delete data[rows-1];
                     break;
                 }
