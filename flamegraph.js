@@ -92,7 +92,7 @@ var vis = {
         }
 
         data = data[0] 
-        // console.log(data);
+        console.log(data);
 
         var percent = parseFloat(config.diameter) / 100.0;
         if (isNaN(percent)) {
@@ -107,9 +107,9 @@ var vis = {
         var flameGraph = d3.flamegraph()
             .width(diameter)
             .transitionDuration(1000)
-            .minFrameSize(50)
             .title(config.top_label)
             .onClick(onClick);
+            // .minFrameSize(5)
             // .height(element.clientHeight)
             // .cellHeight(18)
             // .transitionEase(d3.easeCubic)
