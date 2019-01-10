@@ -41,8 +41,7 @@ var vis = {
           min_measures: 1, max_measures: 1})) {
           return;
         } 
-    
-        //TODO modify array to concat extra dims together
+  
         var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
         var measure = queryResponse.fields.measures[0].name;
 
@@ -94,15 +93,16 @@ var vis = {
         data = data[0] 
         console.log(data);
 
-        var percent = parseFloat(config.diameter) / 100.0;
-        if (isNaN(percent)) {
+        var ratio = parseFloat(config.diameter) / 100.0;
+        if (isNaN(ratio)) {
           var diameter = element.clientWidth;
-        }
-        else {
-          var diameter = Math.round(element.clientWidth*percent);
+        } else if (ratio > 10) {
+          var diameter = element.clientWidth*10;
+        } else {
+          var diameter = Math.round(element.clientWidth*ratio);
         }
 
-        // TODO reset zoom button and reset color
+        // TODO reset color
 
         var flameGraph = d3.flamegraph()
             .width(diameter)
