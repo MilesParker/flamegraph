@@ -107,7 +107,7 @@ var vis = {
         var flameGraph = d3.flamegraph()
             .width(diameter)
             .transitionDuration(1000)
-            .minFrameSize(5)
+            .minFrameSize(50)
             .title(config.top_label)
             .onClick(onClick);
             // .height(element.clientHeight)
