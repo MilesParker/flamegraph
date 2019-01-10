@@ -2,19 +2,21 @@ var vis = {
     id: 'flamegraph',
     label: 'Flamegraph',
     options: {
-        // TODO ability to modify color range palette and diameter of chart
-        color_range: {
-            type: 'array',
-            label: 'Color Range',
-            display: 'colors',
-            default: ['#dd3333', '#80ce5d', '#f78131', '#369dc1', '#c572d3', '#36c1b3', '#b57052', '#ed69af']
+        color: {
+            type: 'string',
+            label: 'Custom Color',
+            display: 'color',
         },
         diameter: {
             type: "string",
             label: "Diameter",
             default: '100%'
+        },
+        top_label: {
+          type: "string",
+          label: "Title",
+          placeholder: "My awesome chart"
         }
-
     },
 
     // Set up the initial state of the visualization
@@ -30,15 +32,116 @@ var vis = {
 
     // Render in response to the data or settings changing
     update: function(data, element, config, queryResponse) {
-        // this.svg = d3.select("#my-flamegraph svg").append("svg")
-        //     .html('')
-        //     .attr('width', '100%')
-        //     .attr('height', element.clientHeight);
-        // console.log(this.svg);
-
         this.container.innerHTML='' // clear container of previous vis so width & height is correct
 
+        // requires no pivots, 3 dimensions, and 1 measure
+        if (!handleErrors(this, queryResponse, { 
+          min_pivots: 0, max_pivots: 0, 
+          min_dimensions: 3, max_dimensions: 3, 
+          min_measures: 1, max_measures: 1})) {
+          return;
+        } 
+    
+        //TODO modify array to concat extra dims together
+        var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
+        var measure = queryResponse.fields.measures[0].name;
 
+        //rename keys
+        rows = Object.keys(data).length;
+        for (i=0; i<rows; i++) {
+            data[i]["name"] = data[i][dim_2_step].value + ' ' + data[i][dim_3_name].value
+            delete data[i][dim_3_name]
+            data[i]["value"] = data[i][measure].value
+            delete data[i][measure]
+            data[i]["children"] = []
+        }
+
+        // sort rows ascending by parent step
+        data.sort(function(a, b) {
+            return parseInt(a[dim_1_parent_step].value) - parseInt(b[dim_1_parent_step].value);
+        });
+
+        //nest children steps inside parent steps for chart
+        while (rows > 1) {
+            last_element = data[rows-1];
+            last_element_parent = last_element[dim_1_parent_step].value;
+            // console.log('last element is: ' + last_element['name']);
+            // console.log('last element parent is: ' + last_element_parent);
+            for (i=0; i<rows; i++) {
+                if (data[i][dim_2_step].value == last_element_parent) {
+                    // console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
+                    data[i]["children"].push(last_element);
+                    if (data[i]["value"]!=last_element["value"]) {
+                        data[i]["value"]+=last_element["value"]
+                    }
+                    // console.log('deleting ' + data[rows-1]['name']);
+                    delete data[rows-1];
+                    break;
+                }
+            }
+            if (data[rows-1] == last_element) {
+              // console.log('Data is not nestable')
+              vis.addError({
+                title: "Data is not nestable",
+                message: "Data must be in nested hierarchy structure.\
+                          Ensure the 1st dimension is the parent id, 2nd dimension is the child id, and 3rd dimension is the descriptor."
+              });
+              break;
+            }
+            rows = Object.keys(data).length; 
+        }
+
+        data = data[0] 
+        // console.log(data);
+
+        var percent = parseFloat(config.diameter) / 100.0;
+        if (isNaN(percent)) {
+          var diameter = element.clientWidth;
+        }
+        else {
+          var diameter = Math.round(element.clientWidth*percent);
+        }
+
+        // TODO reset zoom button and reset color
+
+        var flameGraph = d3.flamegraph()
+            .width(diameter)
+            .transitionDuration(1000)
+            .minFrameSize(5)
+            .title(config.top_label)
+            .onClick(onClick);
+            // .height(element.clientHeight)
+            // .cellHeight(18)
+            // .transitionEase(d3.easeCubic)
+            // .differential(false)
+            // .elided(false)
+            // .selfValue(false)
+
+        // custom color formatting
+        // console.log(config.color)
+        if (config.color != null) {
+          flameGraph.setColorMapper(function(d) {
+              return config.color;
+          });
+        }
+
+        // set the tooltip hover
+        var tip = d3.tip()
+          .direction("s")
+          .offset([8, 0])
+          .attr('class', 'd3-flame-graph-tip')
+          .html(function(d) { return d.data.name + " (" + d.data.value.toLocaleString() + ")"; });
+        flameGraph.tooltip(tip);
+
+        var details = document.getElementById("details");
+        flameGraph.setDetailsElement(details);
+
+
+        d3.select("#my-flamegraph")
+            .datum(data)
+            .call(flameGraph);
+
+        // flamegraph functions
         function handleErrors(vis, res, options) {
           var check = function (group, noun, count, min, max) {
               if (!vis.addError || !vis.clearErrors) {
@@ -67,105 +170,26 @@ var vis = {
           return (check('pivot-req', 'Pivot', pivots.length, options.min_pivots, options.max_pivots)
               && check('dim-req', 'Dimension', dimensions.length, options.min_dimensions, options.max_dimensions)
               && check('mes-req', 'Measure', measures.length, options.min_measures, options.max_measures));
-        };
-
-        // requires no pivots, 3 dimensions, and 1 measure
-        if (!handleErrors(this, queryResponse, { min_pivots: 0, max_pivots: 0, min_dimensions: 3, max_dimensions: 3, min_measures: 1, max_measures: 1})) {
-          return;
-        } 
-        else { 
-          console.log('Query contains correct number of dimensions, measures, and pivots') 
-        };
-    
-
-        //TODO modify array to concat extra dims together
-        var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
-        var measure = queryResponse.fields.measures[0].name;
-
-        //rename keys
-        rows = Object.keys(data).length;
-        for (i=0; i<rows; i++) {
-            data[i]["name"] = data[i][dim_2_step].value + ' ' + data[i][dim_3_name].value
-            delete data[i][dim_3_name]
-            data[i]["value"] = data[i][measure].value // TODO change to total cost
-            delete data[i][measure]
-            data[i]["children"] = []
         }
 
-        // sort rows ascending by parent step
-        data.sort(function(a, b) {
-            return parseInt(a[dim_1_parent_step].value) - parseInt(b[dim_1_parent_step].value);
-        });
-        console.log(data);
-
-        //nest children steps inside parent steps for chart
-        while (rows > 1) {
-            last_element = data[rows-1];
-            last_element_parent = last_element[dim_1_parent_step].value;
-            console.log('last element is: ' + last_element['name']);
-            console.log('last element parent is: ' + last_element_parent);
-            for (i=0; i<rows; i++) {
-                if (data[i][dim_2_step].value == last_element_parent) {
-                    console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
-                    data[i]["children"].push(last_element);
-                    if (data[i]["value"]!=last_element["value"]) {
-                        data[i]["value"]+=last_element["value"]
-                    }
-                    console.log('deleting ' + data[rows-1]['name']);
-                    delete data[rows-1];
-                    break;
-                }
-            }
-            rows = Object.keys(data).length; 
+        function resetZoom() {
+          flameGraph.resetZoom();
         }
 
-        data = data[0] 
-        console.log(data);
-
-
-
-        var flameGraph = d3.flamegraph()
-            .width(element.clientWidth);
-            // .height(element.clientHeight)
-            // .cellHeight(18)
-            // .transitionDuration(750)
-            // .minFrameSize(5)
-            // .transitionEase(d3.easeCubic)
-            // .sort(true)
-            // //Example to sort in reverse order
-            // //.sort(function(a,b){ return d3.descending(a.name, b.name);})
-            // .title("")
-            // .onClick(onClick)
-            // .differential(false)
-            // .elided(false)
-            // .selfValue(false);
-            //TODO add additional formatting here
-
-        d3.select("#my-flamegraph")
-            .datum(data)
-            .call(flameGraph);
-
-
-        // Example on how to use custom tooltips using d3-tip.
-        // var tip = d3.tip()
-        //   .direction("s")
-        //   .offset([8, 0])
-        //   .attr('class', 'd3-flame-graph-tip')
-        //   .html(function(d) { return "name: " + d.data.name + ", value: " + d.data.value; });
-        // flameGraph.tooltip(tip);
-
-        var details = document.getElementById("details");
-        flameGraph.setDetailsElement(details);
+        function onClick(d) {
+          console.info(`Clicked on ${d.data.name}, id: "${d.id}"`);
+          history.pushState({ id: d.id }, d.data.name, `#${d.id}`);
+        }
 
         // Example on how to use searchById() function in flamegraph. 
         // To invoke this function after loading the graph itself, this function should be registered in d3 datum(data).call()
         // (See d3.json invocation in this file)
-        function invokeFind() {
-          var searchId = parseInt(location.hash.substring(1), 10);
-          if (searchId) {
-            find(searchId);
-          }
-        }
+        // function invokeFind() {
+        //   var searchId = parseInt(location.hash.substring(1), 10);
+        //   if (searchId) {
+        //     find(searchId);
+        //   }
+        // }
         // Example on how to use custom labels
         // var label = function(d) {
         //  return "name: " + d.name + ", value: " + d.value;
@@ -181,38 +205,28 @@ var vis = {
         //       .call(invokeFind);
         // });
 
-        document.getElementById("my-flamegraph").addEventListener("submit", function(event){
-          event.preventDefault();
-          search();
-        });
+        // document.getElementById("my-flamegraph").addEventListener("submit", function(event){
+        //   event.preventDefault();
+        //   search();
+        // });
 
-        function search() {
-          var term = document.getElementById("term").value;
-          flameGraph.search(term);
-        }
+        // function search() {
+        //   var term = document.getElementById("term").value;
+        //   flameGraph.search(term);
+        // }
 
-        function find(id) {
-          var elem = flameGraph.findById(id);
-          if (elem){
-            console.log(elem)
-            flameGraph.zoomTo(elem);
-          }
-        }
+        // function find(id) {
+        //   var elem = flameGraph.findById(id);
+        //   if (elem){
+        //     console.log(elem)
+        //     flameGraph.zoomTo(elem);
+        //   }
+        // }
 
-        function clear() {
-          document.getElementById('term').value = '';
-          flameGraph.clear();
-        }
-
-        function resetZoom() {
-          flameGraph.resetZoom();
-        }
-
-        function onClick(d) {
-          console.info(`Clicked on ${d.data.name}, id: "${d.id}"`);
-          history.pushState({ id: d.id }, d.data.name, `#${d.id}`);
-        }
-
+        // function clear() {
+        //   document.getElementById('term').value = '';
+        //   flameGraph.clear();
+        // }
     }
 };
 looker.plugins.visualizations.add(vis);
