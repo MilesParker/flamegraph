@@ -51,7 +51,7 @@ var vis = {
             data[i]["name"] = data[i][dim_2_step].value + ' ' + data[i][dim_3_name].value
             delete data[i][dim_3_name]
             data[i]["value"] = data[i][measure].value
-            delete data[i][measure]
+            // delete data[i][measure]
             data[i]["children"] = []
         }
 
@@ -70,8 +70,10 @@ var vis = {
                 if (data[i][dim_2_step].value == last_element_parent) {
                     // console.log('parent step found, pushing ' + last_element['name'] + ' to ' + data[i]['name']);
                     data[i]["children"].push(last_element);
-                    if (data[i]["value"]!=last_element["value"]) {
+                    if (data[i][measure].value!=last_element[measure].value) {
                         data[i]["value"]+=last_element["value"]
+                    } else {
+                      data[i]["value"]=last_element["value"]
                     }
                     // console.log('deleting ' + data[rows-1]['name']);
                     delete data[rows-1];
