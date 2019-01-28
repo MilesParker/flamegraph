@@ -12,6 +12,11 @@ var vis = {
             label: "Diameter",
             default: '100%'
         },
+        stepwise_max_scale: {
+          type: "number",
+          label: "Stepwise Max Scale",
+          placeholder: "4"
+        },
         top_label: {
           type: "string",
           label: "Title",
@@ -96,7 +101,10 @@ var vis = {
         console.log(data);
 
         //scale children to minimum values
-        stepwise_scale(data, 4)
+        var scaler = config.stepwise_max_scale;
+        if (Number.isInteger(scaler)) {
+          stepwise_scale(data, scaler);
+        }
 
         // set chart diameter & max width
         var ratio = parseFloat(config.diameter) / 100.0;
