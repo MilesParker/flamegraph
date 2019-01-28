@@ -44,7 +44,7 @@ var vis = {
   
         var dim_1_parent_step = queryResponse.fields.dimensions[0].name, dim_2_step = queryResponse.fields.dimensions[1].name, dim_3_name = queryResponse.fields.dimensions[2].name;
         var measure = queryResponse.fields.measures[0].name;
-
+        
         //rename keys
         rows = Object.keys(data).length;
         for (i=0; i<rows; i++) {
@@ -95,6 +95,10 @@ var vis = {
         data = data[0] 
         console.log(data);
 
+        //scale children to minimum values
+        stepwise_scale(data, 4)
+
+        // set chart diameter & max width
         var ratio = parseFloat(config.diameter) / 100.0;
         if (isNaN(ratio)) {
           var diameter = element.clientWidth;
@@ -173,6 +177,39 @@ var vis = {
               && check('dim-req', 'Dimension', dimensions.length, options.min_dimensions, options.max_dimensions)
               && check('mes-req', 'Measure', measures.length, options.min_measures, options.max_measures));
         }
+
+        function stepwise_scale(data, scaler) {
+          console.log('step: ' + data["name"] + ' ' + data["value"]);
+          children_total = 0;
+
+          // no children - exit
+          if (data["children"].length==0){
+            return;
+          }
+
+          // get total of children values
+          for (var i=0; i<data["children"].length; i++) {
+            children_total += data["children"][i]["value"]; 
+          }
+          // console.log(children_total);
+
+          // scale children's values up to scaler
+          if (data["value"] / scaler > children_total) {
+            for (var i=0; i<data["children"].length; i++) {
+              percent_scale = data["children"][i]["value"]/children_total;
+              new_value = Math.round(percent_scale*(data["value"] / scaler));
+              console.log('scaling step: ' + data["children"][i]["name"] + ' from ' + data["children"][i]["value"] + ' to ' + new_value);
+              data["children"][i]["value"]=new_value;
+            }
+          }
+
+          // recurse through children
+          for (var i=0; i<data["children"].length; i++) {
+            stepwise_scale(data["children"][i], scaler);
+          }
+        }
+
+
 
         function resetZoom() {
           flameGraph.resetZoom();
