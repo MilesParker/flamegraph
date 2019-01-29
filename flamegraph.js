@@ -10,7 +10,8 @@ var vis = {
         diameter: {
             type: "string",
             label: "Diameter",
-            default: '100%'
+            default: '100%',
+            placeholder: "100%"
         },
         stepwise_max_scale: {
           type: "number",
@@ -33,7 +34,6 @@ var vis = {
         container.setAttribute("id","my-flamegraph");
         container.classList.add("d3-flame-graph");
     },
-
 
     // Render in response to the data or settings changing
     update: function(data, element, config, queryResponse) {
@@ -150,7 +150,6 @@ var vis = {
         var details = document.getElementById("details");
         flameGraph.setDetailsElement(details);
 
-
         d3.select("#my-flamegraph")
             .datum(data)
             .call(flameGraph);
@@ -217,8 +216,6 @@ var vis = {
           }
         }
 
-
-
         function resetZoom() {
           flameGraph.resetZoom();
         }
@@ -227,53 +224,6 @@ var vis = {
           console.info(`Clicked on ${d.data.name}, id: "${d.id}"`);
           history.pushState({ id: d.id }, d.data.name, `#${d.id}`);
         }
-
-        // Example on how to use searchById() function in flamegraph. 
-        // To invoke this function after loading the graph itself, this function should be registered in d3 datum(data).call()
-        // (See d3.json invocation in this file)
-        // function invokeFind() {
-        //   var searchId = parseInt(location.hash.substring(1), 10);
-        //   if (searchId) {
-        //     find(searchId);
-        //   }
-        // }
-        // Example on how to use custom labels
-        // var label = function(d) {
-        //  return "name: " + d.name + ", value: " + d.value;
-        // }
-        // flameGraph.label(label);
-        // Example of how to set fixed chart height
-        // flameGraph.height(540);
-        // d3.json("stacks.json", function(error, data) {
-        //   if (error) return console.warn(error);
-        //   d3.select("#chart")
-        //       .datum(data)
-        //       .call(flameGraph)
-        //       .call(invokeFind);
-        // });
-
-        // document.getElementById("my-flamegraph").addEventListener("submit", function(event){
-        //   event.preventDefault();
-        //   search();
-        // });
-
-        // function search() {
-        //   var term = document.getElementById("term").value;
-        //   flameGraph.search(term);
-        // }
-
-        // function find(id) {
-        //   var elem = flameGraph.findById(id);
-        //   if (elem){
-        //     console.log(elem)
-        //     flameGraph.zoomTo(elem);
-        //   }
-        // }
-
-        // function clear() {
-        //   document.getElementById('term').value = '';
-        //   flameGraph.clear();
-        // }
     }
 };
 looker.plugins.visualizations.add(vis);
