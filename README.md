@@ -10,6 +10,11 @@ Here's an example of analysing Redshift's Query Plan Costs within Looker (this i
 ![Screenshot](https://github.com/davidtamaki/flamegraph/blob/master/screen-shots/flamegraph_example.gif)
 
 
+## Data Requirements
+Data must be in nested hierarchy structure. Ensure the 1st dimension is the parent id, the 2nd dimension is the child id, and 3rd dimension is the descriptor:
+
+<img src="https://github.com/davidtamaki/flamegraph/blob/master/screen-shots/flamegraph_data_format.png" width="500">
+
 ## Implementation Instructions
 1. Fork this repository
 
