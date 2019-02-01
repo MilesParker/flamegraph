@@ -16,7 +16,7 @@ var vis = {
         stepwise_max_scale: {
           type: "number",
           label: "Stepwise Max Scale",
-          placeholder: "4"
+          placeholder: 4
         },
         top_label: {
           type: "string",
@@ -186,7 +186,7 @@ var vis = {
         }
 
         function stepwise_scale(data, scaler) {
-          console.log('step: ' + data["name"] + ' ' + data["value"]);
+          // console.log('step: ' + data["name"] + ' ' + data["value"]);
           children_total = 0;
 
           // no children - exit
