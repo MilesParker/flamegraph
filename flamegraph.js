@@ -14,14 +14,14 @@ var vis = {
             placeholder: "100%"
         },
         stepwise_max_scale: {
-          type: "number",
-          label: "Stepwise Max Scale",
-          placeholder: 4
+            type: "number",
+            label: "Stepwise Max Scale",
+            default: 4
         },
         top_label: {
-          type: "string",
-          label: "Title",
-          placeholder: "My awesome chart"
+            type: "string",
+            label: "Title",
+            placeholder: "My awesome chart"
         }
     },
 
@@ -86,7 +86,6 @@ var vis = {
                 }
             }
             if (data[rows-1] == last_element) {
-              // console.log('Data is not nestable')
               vis.addError({
                 title: "Data is not nestable",
                 message: "Data must be in nested hierarchy structure.\
