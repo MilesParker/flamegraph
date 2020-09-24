@@ -85,14 +85,6 @@ var vis = {
                     break;
                 }
             }
-            if (data[rows-1] == last_element) {
-              vis.addError({
-                title: "Data is not nestable",
-                message: "Data must be in nested hierarchy structure.\
-                          Ensure the 1st dimension is the parent id, 2nd dimension is the child id, and 3rd dimension is the descriptor."
-              });
-              break;
-            }
             rows = Object.keys(data).length; 
         }
 
